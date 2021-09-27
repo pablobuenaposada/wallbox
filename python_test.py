@@ -35,10 +35,8 @@ class BasicClass:
             "SN01": {"database": AnObject("SN01")},
             "SN02": {"database": AnObject("SN01")},
         }
-
-        for (
-            device
-        ) in self.sn_ip:  # start a thread for the logging mechanism for every device
+        # start a thread for the logging mechanism for every device
+        for device in self.sn_ip:
             t = threading.Thread(
                 group=None,
                 target=self.log_device_from_db,
@@ -66,8 +64,8 @@ if __name__ == "__main__":
     my_object = BasicClass()
     my_object.init_log_for_register_devices(args.output)  # start logging
 
-    t_end = time.time() + DURATION
-    while time.time() < t_end:  # wait specific amount of time
+    time_to_end = time.time() + DURATION
+    while time.time() < time_to_end:  # wait specific amount of time
         pass
     my_object.stop_log()  # stop logging
 
