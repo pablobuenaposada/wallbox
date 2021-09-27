@@ -3,6 +3,7 @@ import threading
 import time
 from pathlib import Path
 
+DURATION = 30 # in seconds
 
 class AnObject:
     def __init__(self, sn):
@@ -18,7 +19,7 @@ class BasicClass:
         self.sn_ip = None
         self.threads = []
 
-    def log_device_from_db(self, device, output_path=Path(""), *args):
+    def log_device_from_db(self, device, output_path, *args):
         with open(output_path / Path(f'{device}_db.log'), 'a') as log:
             while self.database_log:
                 log.write(self.sn_ip[device]["database"].get_control_pilot_details())
@@ -47,12 +48,12 @@ class BasicClass:
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument("--output")
+    parser.add_argument("--output", type=Path, default="")
     args = parser.parse_args()
 
     my_object = BasicClass()
-    my_object.init_log_for_register_devices(Path("") if args.output is None else Path(args.output))
-    t_end = time.time() + 30
+    my_object.init_log_for_register_devices(args.output)
+    t_end = time.time() + DURATION
     while time.time() < t_end:
         pass
     my_object.stop_log()
